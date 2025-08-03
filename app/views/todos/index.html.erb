@@ -1,0 +1,57 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1>TODOリスト</h1>
+      <%= link_to "新しいTODOを追加", new_todo_path, class: "btn btn-primary" %>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6">
+        <h3>未完了のTODO (<%= @pending_todos.count %>)</h3>
+        <% if @pending_todos.any? %>
+          <% @pending_todos.each do |todo| %>
+            <div class="card mb-3">
+              <div class="card-body">
+                <h5 class="card-title"><%= todo.title %></h5>
+                <p class="card-text"><%= truncate(todo.description, length: 100) if todo.description.present? %></p>
+                <div class="btn-group" role="group">
+                  <%= link_to "詳細", todo, class: "btn btn-outline-primary btn-sm" %>
+                  <%= link_to "編集", edit_todo_path(todo), class: "btn btn-outline-secondary btn-sm" %>
+                  <%= link_to "完了", toggle_todo_path(todo), method: :patch, class: "btn btn-success btn-sm" %>
+                  <%= link_to "削除", todo, method: :delete, 
+                              confirm: "本当に削除しますか？", 
+                              class: "btn btn-outline-danger btn-sm" %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="alert alert-info">未完了のTODOはありません。</div>
+        <% end %>
+      </div>
+      
+      <div class="col-md-6">
+        <h3>完了済みのTODO (<%= @completed_todos.count %>)</h3>
+        <% if @completed_todos.any? %>
+          <% @completed_todos.each do |todo| %>
+            <div class="card mb-3 bg-light">
+              <div class="card-body">
+                <h5 class="card-title text-muted"><s><%= todo.title %></s></h5>
+                <p class="card-text text-muted"><%= truncate(todo.description, length: 100) if todo.description.present? %></p>
+                <div class="btn-group" role="group">
+                  <%= link_to "詳細", todo, class: "btn btn-outline-primary btn-sm" %>
+                  <%= link_to "未完了に戻す", toggle_todo_path(todo), method: :patch, class: "btn btn-warning btn-sm" %>
+                  <%= link_to "削除", todo, method: :delete, 
+                              confirm: "本当に削除しますか？", 
+                              class: "btn btn-outline-danger btn-sm" %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <div class="alert alert-info">完了済みのTODOはありません。</div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
